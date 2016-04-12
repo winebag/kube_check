@@ -8,7 +8,7 @@ import (
 	//"encoding/json"
 	"github.com/codegangsta/cli"
 	"k8s.io/kubernetes/pkg/api"
-	//"k8s.io/kubernetes/pkg/fields"
+	"k8s.io/kubernetes/pkg/fields"
 	//"k8s.io/kubernetes/pkg/labels"
 
 	"k8s.io/kubernetes/pkg/client/restclient"
@@ -52,14 +52,14 @@ func watchPod(c *cli.Context) {
 			FieldSelector: "name=nginx",
 		}
 	*/
-	/*
-			selector := fields.Set{
-				"metadata.name": "ngnix",
-			}.AsSelector()
 
-		opts := api.ListOptions{FieldSelector: selector}
-	*/
-	w, err := clientU.Pods("").Watch(api.ListOptions{})
+	/*	selector := fields.Set{
+		"kind": "pod",
+	}.AsSelector()*/
+
+	opts := api.ListOptions{FieldSelector: fields.Set{"metadata.name": "nginx"}.AsSelector()}
+
+	w, err := clientU.Pods("").Watch(opts)
 	if err != nil {
 		fmt.Println("get watch interface err")
 	} else {
